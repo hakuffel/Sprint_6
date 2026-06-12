@@ -1,26 +1,19 @@
 import allure
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from locators.order_page_locators import OrderFormLocators
+from pages.base_page import BasePage
 import random
 
-class OrderPage:
-    def __init__(self, driver):
-        self.driver = driver
+class OrderPage(BasePage):
 
     @allure.step("Нажать на кнопку заказа")
     def click_order_button(self, timeout=5):
-        order_button = WebDriverWait(self.driver, timeout).until(
-            EC.element_to_be_clickable(OrderFormLocators.ORDER_BUTTON)
-        )
+        order_button = self.wait_until_clickable(OrderFormLocators.ORDER_BUTTON, timeout)
         order_button.click()
 
     @allure.step("Ввести имя заказчика")
     def set_name(self, timeout=5):
         names = ['Катя', 'Ян']
-        name_field = WebDriverWait(self.driver, timeout).until(
-            EC.element_to_be_clickable(OrderFormLocators.INPUT_NAME)
-        )
+        name_field = self.wait_until_clickable(OrderFormLocators.INPUT_NAME, timeout)
         name_field.click()
         name_field.send_keys(random.choice(names))
 
@@ -37,22 +30,16 @@ class OrderPage:
     def set_station(self, timeout=5):
         stations = ['Комсомольская', 'Лубянка']
         station_name = random.choice(stations)
-        metro_field = WebDriverWait(self.driver, timeout).until(
-            EC.element_to_be_clickable(OrderFormLocators.INPUT_METRO)
-        )
+        metro_field = self.wait_until_clickable(OrderFormLocators.INPUT_METRO, timeout)
         metro_field.click()
         metro_field.send_keys(station_name)
-        metro_select = WebDriverWait(self.driver, timeout).until(
-            EC.element_to_be_clickable(OrderFormLocators.METRO_SELECT_LIST)
-        )
+        metro_select = self.wait_until_clickable(OrderFormLocators.METRO_SELECT_LIST, timeout)
         metro_select.click()
 
     @allure.step("Ввести адрес")
     def set_number(self, timeout=5):
         number = '+7' + str(random.randint(1000000000, 9999999999))
-        phone_field = WebDriverWait(self.driver, timeout).until(
-            EC.element_to_be_clickable(OrderFormLocators.INPUT_PHONE)
-        )
+        phone_field = self.wait_until_clickable(OrderFormLocators.INPUT_PHONE, timeout)
         phone_field.click()
         phone_field.send_keys(number)
 
@@ -63,24 +50,18 @@ class OrderPage:
     @allure.step("Ввести дату заказа")
     def set_data(self, timeout=5):
         dates = ['17.08.2026', '29.09.2026']
-        data = WebDriverWait(self.driver, timeout).until(
-            EC.element_to_be_clickable(OrderFormLocators.INPUT_DATE)
-        )
+        data = self.wait_until_clickable(OrderFormLocators.INPUT_DATE, timeout)
         data.click()
         data.send_keys(random.choice(dates))
         self.driver.find_element(*OrderFormLocators.BODY).click()
 
     @allure.step("Выбрать период аренды")
     def choose_rental(self, timeout=5):
-        rental_dropdown = WebDriverWait(self.driver, timeout).until(
-            EC.element_to_be_clickable(OrderFormLocators.RENTAL_PERIOD_DROPDOWN)
-        )
+        rental_dropdown = self.wait_until_clickable(OrderFormLocators.RENTAL_PERIOD_DROPDOWN, timeout)
         rental_dropdown.click()
 
         rental_option = random.choice(OrderFormLocators.RENTAL_PERIOD)
-        rental_element = WebDriverWait(self.driver, timeout).until(
-            EC.element_to_be_clickable(rental_option)
-        )
+        rental_element = self.wait_until_clickable(rental_option, timeout)
         rental_element.click()
 
     @allure.step("Выбрать цвет самоката")
@@ -101,16 +82,11 @@ class OrderPage:
 
     @allure.step("Нажать на кнопку подтверждения заказа")
     def click_yes_for_order_button(self, timeout=5):
-        button_yes = WebDriverWait(self.driver, timeout).until(
-            EC.element_to_be_clickable(OrderFormLocators.BUTTON_YES)
-        )
+        button_yes = self.wait_until_clickable(OrderFormLocators.BUTTON_YES, timeout)
         button_yes.click()
 
     @allure.step("Проверить наличие модального окна об успешном создании заказа")
     def check_order_complete(self, timeout=5):
-        success_modal = WebDriverWait(self.driver, timeout).until(
-            EC.visibility_of_element_located(OrderFormLocators.SUCCESS_MODAL)
-        )
-
+        success_modal = self.wait_until_visible(OrderFormLocators.SUCCESS_MODAL, timeout)
         header = success_modal.find_element(*OrderFormLocators.MODAL_HEADER)
         return 'Заказ оформлен' in header.text

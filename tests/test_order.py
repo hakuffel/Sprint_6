@@ -1,13 +1,13 @@
 import allure
 from pages.order_page import OrderPage
-from pages.base_page import BasePage
+from pages.main_page import MainPage
 
 class TestOrder:
 
     @allure.title("Проверка на успешное создание заказа")
     def test_success_order(self, driver):
-        base_page = BasePage(driver)
-        base_page.clik_accept_cookie()
+        main_page = MainPage(driver)
+        main_page.clik_accept_cookie()
 
         order_page = OrderPage(driver)
         order_page.click_order_button()

@@ -1,6 +1,6 @@
 from selenium.webdriver.common.by import By
 
-class FAQPageLocators:
+class MainPageLocators:
 
     FAQ_SECTION = (By.CLASS_NAME, "Home_FourPart__1uthg")
 
@@ -11,3 +11,7 @@ class FAQPageLocators:
     @staticmethod
     def faq_answer(index):
         return By.ID, f"accordion__panel-{index}"
+
+    LOGO_YANDEX = (By.XPATH, "//a[contains(@class, 'Header_LogoYandex')]")
+    LOGO_SAMOKAT = (By.XPATH, "//a[contains(@class, 'Header_LogoScooter')]")
+    COOKIE_BUTTON = (By.ID, "rcc-confirm-button")
